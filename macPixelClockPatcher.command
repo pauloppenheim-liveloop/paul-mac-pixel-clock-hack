@@ -10,6 +10,7 @@ iokit_md5_10_8_4=233a4256b845b647b151739c87070695
 iokit_md5_10_8_5_12F45=5d69bf9227997dfad5e48fa87bd14598
 iokit_md5_10_9_1=d085445f30410008593a65ef4b5f9889
 iokit_md5_10_9_2=9804392bbe8ba4b589175be56889c6c7
+iokit_md5_10_9_3=9a86b6708569360f3156b53cc4f205d9
 
 iokit_md5_10_7_4_patched=92eb38917f6ec4f341bff6fd1b6076ed
 iokit_md5_10_7_5_patched=b5b15d1ed5a404962bc7de895a0df56a
@@ -249,6 +250,11 @@ if [ "$iokit_md5_current" = "$iokit_md5_10_9_2" ]; then
         sudo touch /System/Library/Extensions
 fi
 
+if [ "$iokit_md5_current" = "$iokit_md5_10_9_3" ]; then
+	echo "Detected unpatched IOKit on 10.9.3, patching."
+        sudo perl -i.bak -pe '$before = qr"\x0F\x85\x9D\x03\x00\x00"s;s/$before/\xE9\x84\x03\x00\x00\x90/g' /System/Library/Frameworks/IOKit.framework/Versions/A/IOKit
+        sudo touch /System/Library/Extensions
+fi
 
 if [ "$nvda_md5_current" = "$nvda_md5_10_8_3" ]; then
 	echo "Detected unpatched NVIDIA driver on 10.8.3, patching."
@@ -283,4 +289,3 @@ if [ "$amd_md5_current" = "$amd_md5_10_9_1" ]; then
 	sudo perl -i.bak -pe '$oldLimit1 = qr"\x75\x0C\x49\x81\x7E\x28\x40\xB3\xD5\x09"s;$newLimit1 = "\x75\x0C\x49\x81\x7E\x28\x00\x84\xD7\x17";$oldLimit2 = qr"\xFF\xFF\x48\x81\x7D\x80\x41\xB3\xD5\x09"s;$newLimit2 = "\xFF\xFF\x48\x81\x7D\x80\x01\x84\xD7\x17";s/$oldLimit1/$newLimit1/g;s/$oldLimit2/$newLimit2/g' /System/Library/Extensions/AMDSupport.kext/Contents/MacOS/AMDSupport
 	sudo touch /System/Library/Extensions
 fi
-

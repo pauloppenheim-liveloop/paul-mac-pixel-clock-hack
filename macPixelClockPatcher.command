@@ -11,6 +11,7 @@ iokit_md5_10_8_5_12F45=5d69bf9227997dfad5e48fa87bd14598
 iokit_md5_10_9_1=d085445f30410008593a65ef4b5f9889
 iokit_md5_10_9_2=9804392bbe8ba4b589175be56889c6c7
 iokit_md5_10_9_3=9a86b6708569360f3156b53cc4f205d9
+iokit_md5_10_9_4=6105cc8f503b589f8b3ce2d3917ad150
 
 iokit_md5_10_7_4_patched=92eb38917f6ec4f341bff6fd1b6076ed
 iokit_md5_10_7_5_patched=b5b15d1ed5a404962bc7de895a0df56a
@@ -19,6 +20,7 @@ iokit_md5_10_8_4_patched=8c70a0ca62bf65e9ffa8667e2871c287
 iokit_md5_10_8_5_12F45_patched=de3ad8279077c675ae8093193deb253f
 iokit_md5_10_9_1_patched=0962001659a2031c2425206d9239bda4
 iokit_md5_10_9_2_patched=45d8fc0e1210f0672297a7716478990e
+iokit_md5_10_9_4_patched=fa60af29f293214caab2b74223f9638d
 
 nvda_md5_10_8_3=6a2d5017b6ddd3d19de2f4039d4c88ec
 nvda_md5_10_8_4=b553fd25b25d2262317e9de758888d2b
@@ -177,6 +179,11 @@ if [ "$iokit_md5_current" = "$iokit_md5_10_9_2_patched" ]; then
 fi
 
 
+if [ "$iokit_md5_current" = "$iokit_md5_10_9_4_patched" ]; then
+	echo "Detected patched IOKit on 10.9.4, no action taken."
+fi
+
+
 if [ "$nvda_md5_current" = "$nvda_md5_10_8_3_patched" ]; then
 	echo "Detected patched NVIDIA driver on 10.8.3, no action taken."
 fi
@@ -250,11 +257,20 @@ if [ "$iokit_md5_current" = "$iokit_md5_10_9_2" ]; then
         sudo touch /System/Library/Extensions
 fi
 
+
 if [ "$iokit_md5_current" = "$iokit_md5_10_9_3" ]; then
 	echo "Detected unpatched IOKit on 10.9.3, patching."
         sudo perl -i.bak -pe '$before = qr"\x0F\x85\x9D\x03\x00\x00"s;s/$before/\xE9\x84\x03\x00\x00\x90/g' /System/Library/Frameworks/IOKit.framework/Versions/A/IOKit
         sudo touch /System/Library/Extensions
 fi
+
+
+if [ "$iokit_md5_current" = "$iokit_md5_10_9_4" ]; then
+	echo "Detected unpatched IOKit on 10.9.4, patching."
+        sudo perl -i.bak -pe '$before = qr"\x0F\x85\x9D\x03\x00\x00"s;s/$before/\xE9\x84\x03\x00\x00\x90/g' /System/Library/Frameworks/IOKit.framework/Versions/A/IOKit
+        sudo touch /System/Library/Extensions
+fi
+
 
 if [ "$nvda_md5_current" = "$nvda_md5_10_8_3" ]; then
 	echo "Detected unpatched NVIDIA driver on 10.8.3, patching."

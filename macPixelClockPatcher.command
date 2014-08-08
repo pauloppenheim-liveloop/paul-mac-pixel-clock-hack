@@ -267,8 +267,10 @@ fi
 
 if [ "$iokit_md5_current" = "$iokit_md5_10_9_4" ]; then
 	echo "Detected unpatched IOKit on 10.9.4, patching."
-        sudo perl -i.bak -pe '$before = qr"\x0F\x85\x9D\x03\x00\x00"s;s/$before/\xE9\x84\x03\x00\x00\x90/g' /System/Library/Frameworks/IOKit.framework/Versions/A/IOKit
-        sudo touch /System/Library/Extensions
+	sudo perl -i.bak -pe '$before = qr"\x0F\x85\x9D\x03\x00\x00"s;s/$before/\xE9\x84\x03\x00\x00\x90/g' /System/Library/Frameworks/IOKit.framework/Versions/A/IOKit
+	sudo touch /System/Library/Extensions
+	# Now appears to require re-signing, despite not being in CodeResources
+	sudo codesign -f -s - /System/Library/Frameworks/IOKit.framework/Versions/A/IOKit
 fi
 
 
